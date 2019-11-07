@@ -5,7 +5,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import application.domain.RssItem;
+import application.domain.RssNewItem;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -29,8 +29,8 @@ public class RssFeed {
         return syndFeed;
     }
 
-    public List<RssItem> getFeedItems() {
-        List<RssItem> rssItemList = new ArrayList<>();
+    public List<RssNewItem> getFeedItems() {
+        List<RssNewItem> rssNewItemList = new ArrayList<>();
         String title;
         String url;
         LocalDateTime date;
@@ -38,8 +38,8 @@ public class RssFeed {
             title = syndEntry.getTitle();
             url = syndEntry.getUri();
             date = syndEntry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            rssItemList.add(new RssItem(title, url, date));
+            rssNewItemList.add(new RssNewItem(title, url, date));
         }
-        return rssItemList;
+        return rssNewItemList;
     }
 }
