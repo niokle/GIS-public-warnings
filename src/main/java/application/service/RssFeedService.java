@@ -1,4 +1,4 @@
-package application;
+package application.service;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -6,6 +6,10 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import application.domain.RssNewItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -13,20 +17,27 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RssFeed {
+@Service
+public class RssFeedService {
     private String url;
     private SyndFeed syndFeed;
 
-    public RssFeed(String url) throws IOException, FeedException {
-        this.url = url;
-        this.syndFeed = getSyndFeed();
+    private static Logger LOGGER = LoggerFactory.getLogger(RssFeedService.class);
+
+    public RssFeedService() {
+
     }
 
-    private SyndFeed getSyndFeed() throws IOException, FeedException {
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void fillSyndFeed() throws IOException, FeedException {
         URL feedSource = new URL(url);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed syndFeed = input.build(new XmlReader(feedSource));
-        return syndFeed;
+        LOGGER.info("Pobieranie źródeł RSS z adresu: " + url);
+        this.syndFeed = syndFeed;
     }
 
     public List<RssNewItem> getFeedItems() {

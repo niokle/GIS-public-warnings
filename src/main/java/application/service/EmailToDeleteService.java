@@ -1,5 +1,6 @@
 package application.service;
 
+import application.domain.EmailActive;
 import application.domain.EmailToDelete;
 import application.repository.EmailToDeleteRepository;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public class EmailToDeleteService {
     }
 
     public EmailToDelete addRecord(EmailToDelete emailToDelete) {
-        if (!emailActiveService.isEmailActiveExists(emailToDelete.getEmail())) {
+        if (!emailActiveService.isEmailActiveExists(emailToDelete.getEmail()) && !isEmailToDeleteExists(emailToDelete.getEmail())) {
             LOGGER.info("Dodanie rekordu: " + emailToDelete.getEmail());
             return emailToDeleteRepository.save(emailToDelete);
         }
@@ -30,5 +31,24 @@ public class EmailToDeleteService {
     public void removeRecord(EmailToDelete emailToDelete) {
         LOGGER.info("Usowanie rekordu: " + emailToDelete.getEmail());
         emailToDeleteRepository.delete(emailToDelete);
+    }
+
+    public boolean isEmailToDeleteExists(String email) {
+        return emailToDeleteRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean isEmailToDeleteExists(Long id) {
+        return emailToDeleteRepository.findById(id).isPresent();
+    }
+
+    public boolean confirmDelete(Long id) {
+        if (isEmailToDeleteExists(id)) {
+            LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
+            emailActiveService.addRecord(new EmailActive(emailToDeleteRepository.findById(id).get().getEmail()));
+            emailToDeleteRepository.delete(emailToDeleteRepository.findById(id).get());
+            return true;
+        }
+        LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + id);
+        return false;
     }
 }
