@@ -1,56 +1,45 @@
 package application.service;
 
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-import application.domain.RssNewItem;
+import application.domain.RssFeed;
+import application.exception.RssFeedNotFoundException;
+import application.repository.RssFeedRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RssFeedService {
-    private String url;
-    private SyndFeed syndFeed;
-
+    private RssFeedRepository rssFeedRepository;
     private static Logger LOGGER = LoggerFactory.getLogger(RssFeedService.class);
 
-    public RssFeedService() {
-
+    public RssFeedService(RssFeedRepository rssFeedRepository) {
+        this.rssFeedRepository = rssFeedRepository;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public Optional<RssFeed> getFeed(Long id) {
+        LOGGER.info("Pobieranie rekordu o id: " + id);
+        return rssFeedRepository.findById(id);
     }
 
-    public void fillSyndFeed() throws IOException, FeedException {
-        URL feedSource = new URL(url);
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed syndFeed = input.build(new XmlReader(feedSource));
-        LOGGER.info("Pobieranie źródeł RSS z adresu: " + url);
-        this.syndFeed = syndFeed;
-    }
-
-    public List<RssNewItem> getFeedItems() {
-        List<RssNewItem> rssNewItemList = new ArrayList<>();
-        String title;
-        String url;
-        LocalDateTime date;
-        for (SyndEntry syndEntry : syndFeed.getEntries()) {
-            title = syndEntry.getTitle();
-            url = syndEntry.getUri();
-            date = syndEntry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            rssNewItemList.add(new RssNewItem(title, url, date));
+    public List<RssFeed> getFeeds() {
+        LOGGER.info("Pobieranie wszystkich rekordów");
+        List<RssFeed> feeds = new ArrayList<>();
+        for (RssFeed feed : rssFeedRepository.findAll()) {
+            feeds.add(feed);
         }
-        return rssNewItemList;
+        return feeds;
+    }
+
+    public RssFeed addFeed(RssFeed rssFeed) {
+        LOGGER.info("Dodanie rekordu, adres: " + rssFeed.getUrl());
+        return rssFeedRepository.save(rssFeed);
+    }
+
+    public void removeFeed(Long id) {
+        LOGGER.info("Usuwanie rekordu o id: " + id);
+        rssFeedRepository.deleteById(id);
     }
 }

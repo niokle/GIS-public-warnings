@@ -4,6 +4,7 @@ import application.domain.EmailActive;
 import application.domain.EmailToDelete;
 import application.exception.EmailToDeleteNotFoundException;
 import application.repository.EmailToDeleteRepository;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
