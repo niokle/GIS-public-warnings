@@ -44,8 +44,8 @@ public class EmailToDeleteServiceTest {
 
         //then
         //todo
-        Assert.assertEquals(null, result1);
-        Assert.assertEquals("n1", result2.getEmail());
+        Assert.assertEquals("m1", result1.getEmail());
+        Assert.assertEquals(null, result2);
 
         //cleanup
         emailActiveRepository.delete(emailActive1);
@@ -57,14 +57,19 @@ public class EmailToDeleteServiceTest {
     @Test
     public void removeRecord() {
         //given
-        EmailToDelete emailToDelete = new EmailToDelete("m1");
-        EmailToDelete resultEmailToDelete = emailToDeleteService.addRecord(emailToDelete);
+        String email = "m1";
+        emailActiveService.addRecord(new EmailActive(email));
+        EmailToDelete resultEmailToDelete = emailToDeleteService.addRecord(new EmailToDelete(email));
         Long resultId = resultEmailToDelete.getId();
 
         //when
-        emailToDeleteService.removeRecord(emailToDelete);
+        emailToDeleteService.removeRecord(resultEmailToDelete);
 
         //then
-        Assert.assertEquals(false, emailToDeleteRepository.findById(resultId).isPresent());
+        Assert.assertFalse(emailToDeleteRepository.findById(resultId).isPresent());
+        Assert.assertTrue(emailActiveRepository.findByEmail(email).isPresent());
+
+        //cleanup
+        emailActiveService.removeRecord(emailActiveRepository.findByEmail(email).get());
     }
 }

@@ -42,7 +42,7 @@ public class EmailToAddService {
         return emailToAddRepository.findById(id).isPresent();
     }
 
-    public boolean confirmDelete(Long id) throws EmailToAddNotFoundException {
+    public boolean confirmAdd(Long id) throws EmailToAddNotFoundException {
         if (isEmailToAddExists(id)) {
             LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
             emailActiveService.addRecord(new EmailActive(emailToAddRepository.findById(id).orElseThrow(EmailToAddNotFoundException::new).getEmail()));

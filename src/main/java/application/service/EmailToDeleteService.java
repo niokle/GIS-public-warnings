@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class EmailToDeleteService {
     private EmailToDeleteRepository emailToDeleteRepository;
     private EmailActiveService emailActiveService;
-    private static Logger LOGGER = LoggerFactory.getLogger(EmailToDelete.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(EmailToDeleteService.class);
 
     public EmailToDeleteService(EmailToDeleteRepository emailToDeleteRepository, EmailActiveService emailActiveService) {
         this.emailToDeleteRepository = emailToDeleteRepository;
@@ -20,11 +20,11 @@ public class EmailToDeleteService {
     }
 
     public EmailToDelete addRecord(EmailToDelete emailToDelete) {
-        if (!emailActiveService.isEmailActiveExists(emailToDelete.getEmail()) && !isEmailToDeleteExists(emailToDelete.getEmail())) {
+        if (emailActiveService.isEmailActiveExists(emailToDelete.getEmail()) && !isEmailToDeleteExists(emailToDelete.getEmail())) {
             LOGGER.info("Dodanie rekordu: " + emailToDelete.getEmail());
             return emailToDeleteRepository.save(emailToDelete);
         }
-        LOGGER.info("Rekord istnieje, nie dodano rekordu: " + emailToDelete.getEmail());
+        LOGGER.info("Rekord nie istnieje, nie dodano rekordu: " + emailToDelete.getEmail());
         //todo
         return null;
     }
@@ -45,7 +45,7 @@ public class EmailToDeleteService {
     public boolean confirmDelete(Long id) throws EmailToDeleteNotFoundException {
         if (isEmailToDeleteExists(id)) {
             LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
-            emailActiveService.addRecord(new EmailActive(emailToDeleteRepository.findById(id).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
+            emailActiveService.removeRecord(new EmailActive(emailToDeleteRepository.findById(id).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
             emailToDeleteRepository.delete(emailToDeleteRepository.findById(id).orElseThrow(EmailToDeleteNotFoundException::new));
             return true;
         }

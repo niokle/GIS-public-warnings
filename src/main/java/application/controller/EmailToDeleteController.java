@@ -1,12 +1,13 @@
 package application.controller;
 
 import application.domain.EmailToDelete;
+import application.exception.EmailToDeleteNotFoundException;
 import application.service.EmailToDeleteService;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*") //todo
 @RestController
-@RequestMapping("/email/delete")
+@RequestMapping("emails/delete")
 public class EmailToDeleteController {
     private EmailToDeleteService emailToDeleteService;
 
@@ -14,13 +15,13 @@ public class EmailToDeleteController {
         this.emailToDeleteService = emailToDeleteService;
     }
 
-    @PostMapping("/{email}")
-    public EmailToDelete addEmailToDelete(@PathVariable String email) {
+    @PostMapping
+    public EmailToDelete addEmailToDelete(@RequestParam(name = "email") String email) {
         return emailToDeleteService.addRecord(new EmailToDelete(email));
     }
 
     @PostMapping("/{id}")
-    public boolean confirmEmailDelete(@PathVariable Long id) {
+    public boolean confirmEmailDelete(@PathVariable Long id) throws EmailToDeleteNotFoundException {
         return emailToDeleteService.confirmDelete(id);
     }
 
