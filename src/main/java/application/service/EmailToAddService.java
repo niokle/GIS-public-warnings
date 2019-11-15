@@ -2,6 +2,7 @@ package application.service;
 
 import application.domain.EmailActive;
 import application.domain.EmailToAdd;
+import application.exception.EmailToAddNotFoundException;
 import application.repository.EmailToAddRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +42,11 @@ public class EmailToAddService {
         return emailToAddRepository.findById(id).isPresent();
     }
 
-    public boolean confirmDelete(Long id) {
+    public boolean confirmDelete(Long id) throws EmailToAddNotFoundException {
         if (isEmailToAddExists(id)) {
             LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
-            emailActiveService.addRecord(new EmailActive(emailToAddRepository.findById(id).get().getEmail()));
-            emailToAddRepository.delete(emailToAddRepository.findById(id).get());
+            emailActiveService.addRecord(new EmailActive(emailToAddRepository.findById(id).orElseThrow(EmailToAddNotFoundException::new).getEmail()));
+            emailToAddRepository.delete(emailToAddRepository.findById(id).orElseThrow(EmailToAddNotFoundException::new));
             return true;
         }
         LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + id);
