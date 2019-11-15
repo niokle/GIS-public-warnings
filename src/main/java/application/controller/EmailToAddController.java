@@ -2,13 +2,11 @@ package application.controller;
 
 import application.domain.EmailToAdd;
 import application.service.EmailToAddService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*") //todo
-@RestController("/email/add")
+@RestController
+@RequestMapping("/email/add")
 public class EmailToAddController {
     private EmailToAddService emailToAddService;
 
@@ -16,13 +14,13 @@ public class EmailToAddController {
         this.emailToAddService = emailToAddService;
     }
 
-    @PostMapping(name = "/{email}")
-    public EmailToAdd addEmailToAdd(@RequestParam String email) {
+    @PostMapping("/{email}")
+    public EmailToAdd addEmailToAdd(@PathVariable String email) {
         return emailToAddService.addRecord(new EmailToAdd(email));
     }
 
-    @PostMapping(name = "/{id}")
-    public boolean confirmEmailDelete(@RequestParam Long id) {
+    @PostMapping("/{id}")
+    public boolean confirmEmailDelete(@PathVariable Long id) {
         return emailToAddService.confirmDelete(id);
     }
 }

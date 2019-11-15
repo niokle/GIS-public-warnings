@@ -2,13 +2,11 @@ package application.controller;
 
 import application.domain.EmailToDelete;
 import application.service.EmailToDeleteService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*") //todo
-@RestController("/email/delete")
+@RestController
+@RequestMapping("/email/delete")
 public class EmailToDeleteController {
     private EmailToDeleteService emailToDeleteService;
 
@@ -16,13 +14,13 @@ public class EmailToDeleteController {
         this.emailToDeleteService = emailToDeleteService;
     }
 
-    @PostMapping(name = "/{email}")
-    public EmailToDelete addEmailToDelete(@RequestParam String email) {
+    @PostMapping("/{email}")
+    public EmailToDelete addEmailToDelete(@PathVariable String email) {
         return emailToDeleteService.addRecord(new EmailToDelete(email));
     }
 
-    @PostMapping(name = "/{id}")
-    public boolean confirmEmailDelete(@RequestParam Long id) {
+    @PostMapping("/{id}")
+    public boolean confirmEmailDelete(@PathVariable Long id) {
         return emailToDeleteService.confirmDelete(id);
     }
 
