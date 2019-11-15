@@ -1,7 +1,6 @@
 package application.service;
 
 import application.domain.RssFeed;
-import application.exception.RssFeedNotFoundException;
 import application.repository.RssFeedRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
