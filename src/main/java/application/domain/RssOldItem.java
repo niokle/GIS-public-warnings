@@ -3,31 +3,31 @@ package application.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "rss_old_items")
+@Entity
+@Table(name = "rss_old_items")
 public class RssOldItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long itemId;
     private String title;
     private String url;
     private LocalDateTime dateTime;
-    private Long feedId; //todo
+    @ManyToOne
+    @JoinColumn(name = "rssFeed.feedId")
+    private RssFeed rssFeed;
 
-    public RssOldItem(String title, String url, LocalDateTime dateTime, Long feedId) {
+    public RssOldItem(String title, String url, LocalDateTime dateTime, RssFeed rssFeed) {
         this.title = title;
         this.url = url;
         this.dateTime = dateTime;
-        this.feedId = feedId;
+        this.rssFeed = rssFeed;
     }
 
     @Override
@@ -38,11 +38,12 @@ public class RssOldItem {
         return Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getUrl(), that.getUrl()) &&
                 Objects.equals(getDateTime(), that.getDateTime()) &&
-                getFeedId().equals(that.getFeedId());
+                Objects.equals(getRssFeed().getFeedId(), that.getRssFeed().getFeedId()) &&
+                Objects.equals(getRssFeed().getUrl(), that.getRssFeed().getUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getUrl(), getDateTime(), getFeedId());
+        return Objects.hash(getTitle(), getUrl(), getDateTime(), getRssFeed());
     }
 }

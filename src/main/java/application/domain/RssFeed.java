@@ -3,20 +3,23 @@ package application.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "rss_feeds")
+@Entity
+@Table(name = "rss_feeds")
 public class RssFeed {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long feedId;
     private String url;
+    @OneToMany(targetEntity = RssOldItem.class, mappedBy = "rssFeed", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<RssOldItem> rssOldItems = new ArrayList<>();
 
     public RssFeed(String url) {
         this.url = url;

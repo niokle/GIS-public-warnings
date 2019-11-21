@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationScheduler {
     private static Logger LOGGER = LoggerFactory.getLogger(ApplicationScheduler.class);
 
-    @Scheduled(cron = "*/2 * * * * *")
+    //@Scheduled(cron = "*/2 * * * * *")
     public void test() {
         LOGGER.info("Uruchomiono zadanie schedulera");
     }

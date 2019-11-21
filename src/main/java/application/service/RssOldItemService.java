@@ -1,5 +1,6 @@
 package application.service;
 
+import application.domain.RssFeed;
 import application.domain.RssOldItem;
 import application.repository.RssOldItemRepository;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class RssOldItemService {
         return rssOldItemRepository.save(rssOldItem);
     }
 
-    public boolean isRssItemExists(String title, String url, LocalDateTime dateTime, Long feedId) {
-        return rssOldItemRepository.findByTitleAndUrlAndAndDateTimeAndFeedId(title, url, dateTime, feedId).isPresent();
+    public boolean isRssItemExists(String title, String url, LocalDateTime dateTime, RssFeed rssFeed) {
+        return rssOldItemRepository.findByTitleAndUrlAndAndDateTimeAndRssFeed(title, url, dateTime, rssFeed).isPresent();
     }
 }

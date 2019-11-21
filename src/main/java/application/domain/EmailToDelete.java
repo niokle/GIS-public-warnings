@@ -3,16 +3,15 @@ package application.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "emails_to_delete")
+@Entity
+@Table(name = "emails_to_delete")
 public class EmailToDelete {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

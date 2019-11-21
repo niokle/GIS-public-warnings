@@ -26,7 +26,7 @@ public class RssFeedServiceTest {
         RssFeed rssFeedResult = rssFeedRepository.save(rssFeed);
 
         //when
-        String url = rssFeedService.getFeed(rssFeedResult.getId()).get().getUrl();
+        String url = rssFeedService.getFeed(rssFeedResult.getFeedId()).get().getUrl();
 
         //then
         Assert.assertEquals("a", url);
@@ -90,7 +90,7 @@ public class RssFeedServiceTest {
         RssFeed rssFeedResult3 = rssFeedRepository.save(rssFeed3);
 
         //when
-        rssFeedService.removeFeed(rssFeedResult1.getId());
+        rssFeedService.removeFeed(rssFeedResult1.getFeedId());
         long result = rssFeedRepository.count();
 
         //then

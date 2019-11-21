@@ -1,6 +1,5 @@
 package application.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,13 +13,13 @@ public class RssNewItem {
     private String title;
     private String url;
     private LocalDateTime dateTime;
-    private Long feedId;
+    private RssFeed rssFeed;
 
-    public RssNewItem(String title, String url, LocalDateTime dateTime, Long feedId) {
+    public RssNewItem(String title, String url, LocalDateTime dateTime, RssFeed rssFeed) {
         this.title = title;
         this.url = url;
         this.dateTime = dateTime;
-        this.feedId = feedId;
+        this.rssFeed = rssFeed;
     }
 
     @Override
@@ -31,11 +30,12 @@ public class RssNewItem {
         return Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getUrl(), that.getUrl()) &&
                 Objects.equals(getDateTime(), that.getDateTime()) &&
-                getFeedId().equals(that.getFeedId());
+                Objects.equals(getRssFeed().getFeedId(), that.getRssFeed().getFeedId()) &&
+                Objects.equals(getRssFeed().getUrl(), that.getRssFeed().getUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getUrl(), getDateTime(), getFeedId());
+        return Objects.hash(getTitle(), getUrl(), getDateTime(), getRssFeed());
     }
 }
