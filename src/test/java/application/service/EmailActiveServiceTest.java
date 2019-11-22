@@ -56,9 +56,9 @@ public class EmailActiveServiceTest {
         emailActiveService.removeRecord(emailActive2);
 
         //then
-        Assert.assertEquals(false, emailActiveRepository.findById("m1").isPresent());
-        Assert.assertEquals(false, emailActiveRepository.findById("m2").isPresent());
-        Assert.assertEquals(true, emailActiveRepository.findById("m3").isPresent());
+        Assert.assertEquals(false, emailActiveRepository.findByEmail("m1").isPresent());
+        Assert.assertEquals(false, emailActiveRepository.findByEmail("m2").isPresent());
+        Assert.assertEquals(true, emailActiveRepository.findByEmail("m3").isPresent());
 
         //cleanup
         emailActiveService.removeRecord(emailActive3);

@@ -11,14 +11,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "rss_feeds")
+@Entity(name = "rss_feeds")
 public class RssFeed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
     private String url;
-    @OneToMany(targetEntity = RssOldItem.class, mappedBy = "rssFeed", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(targetEntity = RssOldItem.class, orphanRemoval = true, mappedBy = "rssFeed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RssOldItem> rssOldItems = new ArrayList<>();
 
     public RssFeed(String url) {

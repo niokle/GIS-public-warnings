@@ -10,11 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "emails_to_add")
+@Entity(name = "emails_to_add")
 public class EmailToAdd {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private LocalDateTime dateTime;
