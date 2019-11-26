@@ -1,6 +1,5 @@
 package application.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,12 +17,12 @@ public class EmailToDelete {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String key;
+    private String recordKey;
     private String email;
     private LocalDateTime dateTime;
 
     public EmailToDelete(String email) {
-        key = UUID.randomUUID().toString().replaceAll("-", "");
+        recordKey = UUID.randomUUID().toString().replaceAll("-", "");
         this.email = email;
         dateTime = LocalDateTime.now();
     }

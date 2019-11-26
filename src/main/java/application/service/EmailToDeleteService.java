@@ -4,7 +4,6 @@ import application.domain.EmailActive;
 import application.domain.EmailToDelete;
 import application.exception.EmailToDeleteNotFoundException;
 import application.repository.EmailToDeleteRepository;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,8 +42,8 @@ public class EmailToDeleteService {
         return emailToDeleteRepository.findById(id).isPresent();
     }
 
-    public boolean isEmailToDeleteExistsByKey(String key) {
-        return emailToDeleteRepository.findByKey(key).isPresent();
+    public boolean isEmailToDeleteExistsByRecordKey(String recordKey) {
+        return emailToDeleteRepository.findByRecordKey(recordKey).isPresent();
     }
 
     public boolean confirmDelete(Long id) throws EmailToDeleteNotFoundException {

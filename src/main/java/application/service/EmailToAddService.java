@@ -43,8 +43,8 @@ public class EmailToAddService {
         return emailToAddRepository.findById(id).isPresent();
     }
 
-    public boolean isEmailToAddExistsByKey(String key) {
-        return emailToAddRepository.findByKey(key).isPresent();
+    public boolean isEmailToAddExistsByRecordKey(String recordKey) {
+        return emailToAddRepository.findByRecordKey(recordKey).isPresent();
     }
 
     public boolean confirmAdd(Long id) throws EmailToAddNotFoundException {

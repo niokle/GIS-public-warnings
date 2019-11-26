@@ -12,5 +12,5 @@ public interface EmailToAddRepository extends CrudRepository<EmailToAdd, Long> {
 
     Optional<EmailToAdd> findById(Long id);
 
-    Optional<EmailToAdd> findByKey(String key);
+    Optional<EmailToAdd> findByRecordKey(String recordKey);
 }
