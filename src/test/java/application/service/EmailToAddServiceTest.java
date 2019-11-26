@@ -33,26 +33,26 @@ public class EmailToAddServiceTest {
         EmailActive emailActive1 = new EmailActive("m1");
         EmailActive emailActive2 = new EmailActive("m2");
         EmailActive emailActive3 = new EmailActive("m3");
-        emailActiveService.addRecord(emailActive1);
-        emailActiveService.addRecord(emailActive2);
-        emailActiveService.addRecord(emailActive3);
+        EmailActive emailActiveResult1 = emailActiveService.addRecord(emailActive1);
+        EmailActive emailActiveResult2 = emailActiveService.addRecord(emailActive2);
+        EmailActive emailActiveResult3 = emailActiveService.addRecord(emailActive3);
         EmailToAdd emailToAdd1 = new EmailToAdd("m1");
         EmailToAdd emailToAdd2 = new EmailToAdd("n1");
 
         //when
-        EmailToAdd result1 = emailToAddService.addRecord(emailToAdd1);
-        EmailToAdd result2 = emailToAddService.addRecord(emailToAdd2);
+        EmailToAdd emailToAddResult1 = emailToAddService.addRecord(emailToAdd1);
+        EmailToAdd emailToAddResult2 = emailToAddService.addRecord(emailToAdd2);
 
         //then
         //todo
-        Assert.assertEquals(null, result1);
-        Assert.assertEquals("n1", result2.getEmail());
+        Assert.assertEquals(null, emailToAddResult1);
+        Assert.assertEquals("n1", emailToAddResult2.getEmail());
 
         //cleanup
-        emailActiveRepository.delete(emailActive1);
-        emailActiveRepository.delete(emailActive2);
-        emailActiveRepository.delete(emailActive3);
-        emailToAddRepository.delete(emailToAdd2);
+        emailActiveRepository.delete(emailActiveResult1);
+        emailActiveRepository.delete(emailActiveResult2);
+        emailActiveRepository.delete(emailActiveResult3);
+        emailToAddRepository.delete(emailToAddResult2);
     }
 
     @Test

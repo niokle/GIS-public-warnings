@@ -11,4 +11,6 @@ public interface EmailToDeleteRepository extends CrudRepository<EmailToDelete, L
     Optional<EmailToDelete> findByEmail(String email);
 
     Optional<EmailToDelete> findById(Long id);
+
+    Optional<EmailToDelete> findByKey(String key);
 }

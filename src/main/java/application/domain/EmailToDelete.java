@@ -1,5 +1,6 @@
 package application.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "emails_to_delete")
+@Entity
+@Table(name = "emails_to_delete")
 public class EmailToDelete {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

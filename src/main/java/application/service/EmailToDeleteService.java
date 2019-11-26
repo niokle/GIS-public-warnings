@@ -43,6 +43,10 @@ public class EmailToDeleteService {
         return emailToDeleteRepository.findById(id).isPresent();
     }
 
+    public boolean isEmailToDeleteExistsByKey(String key) {
+        return emailToDeleteRepository.findByKey(key).isPresent();
+    }
+
     public boolean confirmDelete(Long id) throws EmailToDeleteNotFoundException {
         if (isEmailToDeleteExists(id)) {
             LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);

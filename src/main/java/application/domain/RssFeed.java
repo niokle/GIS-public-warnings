@@ -11,7 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "rss_feeds")
+@Entity
+@Table(name = "rss_feeds")
 public class RssFeed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,7 +3,6 @@ package application.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,7 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "emails_to_add")
+@Entity
+@Table(name = "emails_to_add")
 public class EmailToAdd {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

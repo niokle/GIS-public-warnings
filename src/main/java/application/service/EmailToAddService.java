@@ -4,6 +4,7 @@ import application.domain.EmailActive;
 import application.domain.EmailToAdd;
 import application.exception.EmailToAddNotFoundException;
 import application.repository.EmailToAddRepository;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class EmailToAddService {
         this.emailActiveService = emailActiveService;
     }
 
-    public EmailToAdd addRecord(EmailToAdd emailToAdd) {
+    public EmailToAdd addRecord(@NotNull EmailToAdd emailToAdd) {
         if (!emailActiveService.isEmailActiveExists(emailToAdd.getEmail()) && !isEmailToAddExists(emailToAdd.getEmail())) {
             LOGGER.info("Dodanie rekordu: " + emailToAdd.getEmail());
             return emailToAddRepository.save(emailToAdd);
@@ -40,6 +41,10 @@ public class EmailToAddService {
 
     public boolean isEmailToAddExists(Long id) {
         return emailToAddRepository.findById(id).isPresent();
+    }
+
+    public boolean isEmailToAddExistsByKey(String key) {
+        return emailToAddRepository.findByKey(key).isPresent();
     }
 
     public boolean confirmAdd(Long id) throws EmailToAddNotFoundException {

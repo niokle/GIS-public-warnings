@@ -35,9 +35,9 @@ public class EmailActiveServiceTest {
         Assert.assertEquals(3, emailActiveRepository.count());
 
         //cleanup
-        emailActiveRepository.delete(emailActive1);
-        emailActiveRepository.delete(emailActive2);
-        emailActiveRepository.delete(emailActive3);
+        emailActiveRepository.delete(result1);
+        emailActiveRepository.delete(result2);
+        emailActiveRepository.delete(result3);
     }
 
     @Test
@@ -49,11 +49,11 @@ public class EmailActiveServiceTest {
         EmailActive emailActive3 = new EmailActive("m3");
 
         //when
-        emailActiveService.addRecord(emailActive1);
-        emailActiveService.addRecord(emailActive2);
-        emailActiveService.addRecord(emailActive3);
-        emailActiveService.removeRecord(emailActive1);
-        emailActiveService.removeRecord(emailActive2);
+        EmailActive emailActiveResult1 = emailActiveService.addRecord(emailActive1);
+        EmailActive emailActiveResult2 = emailActiveService.addRecord(emailActive2);
+        EmailActive emailActiveResult3 = emailActiveService.addRecord(emailActive3);
+        emailActiveService.removeRecord(emailActiveResult1);
+        emailActiveService.removeRecord(emailActiveResult2);
 
         //then
         Assert.assertEquals(false, emailActiveRepository.findByEmail("m1").isPresent());
@@ -61,17 +61,16 @@ public class EmailActiveServiceTest {
         Assert.assertEquals(true, emailActiveRepository.findByEmail("m3").isPresent());
 
         //cleanup
-        emailActiveService.removeRecord(emailActive3);
+        emailActiveService.removeRecord(emailActiveResult3);
     }
 
     @Test
     public void isEmailActiveExists() {
         //given
-        EmailActiveService emailActiveService = new EmailActiveService(emailActiveRepository);
         EmailActive emailActive1 = new EmailActive("m1");
 
         //when
-        emailActiveService.addRecord(emailActive1);
+        EmailActive emailActiveResult = emailActiveService.addRecord(emailActive1);
         boolean resultTrue = emailActiveService.isEmailActiveExists("m1");
         boolean resultFalse = emailActiveService.isEmailActiveExists("xx");
 
@@ -80,6 +79,6 @@ public class EmailActiveServiceTest {
         Assert.assertFalse(resultFalse);
 
         //cleanup
-        emailActiveRepository.delete(emailActive1);
+        emailActiveRepository.delete(emailActiveResult);
     }
 }

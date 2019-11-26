@@ -10,7 +10,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "rss_old_items")
+@Entity
+@Table(name = "rss_old_items")
 public class RssOldItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
