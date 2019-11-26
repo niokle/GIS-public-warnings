@@ -20,9 +20,9 @@ public class EmailToDeleteController {
         return emailToDeleteService.addRecord(new EmailToDelete(email));
     }
 
-    @PostMapping("/{id}")
-    public boolean confirmEmailDelete(@PathVariable Long id) throws EmailToDeleteNotFoundException {
-        return emailToDeleteService.confirmDelete(id);
+    @PostMapping("/{recordKey}")
+    public boolean confirmEmailDelete(@PathVariable String recordKey) throws EmailToDeleteNotFoundException {
+        return emailToDeleteService.confirmDelete(recordKey);
     }
 
 }

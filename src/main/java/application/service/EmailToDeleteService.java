@@ -46,14 +46,14 @@ public class EmailToDeleteService {
         return emailToDeleteRepository.findByRecordKey(recordKey).isPresent();
     }
 
-    public boolean confirmDelete(Long id) throws EmailToDeleteNotFoundException {
-        if (isEmailToDeleteExists(id)) {
-            LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
-            emailActiveService.removeRecord(new EmailActive(emailToDeleteRepository.findById(id).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
-            emailToDeleteRepository.delete(emailToDeleteRepository.findById(id).orElseThrow(EmailToDeleteNotFoundException::new));
+    public boolean confirmDelete(String recordKey) throws EmailToDeleteNotFoundException {
+        if (isEmailToDeleteExistsByRecordKey(recordKey)) {
+            LOGGER.info("Udane potwierdzone usuniecie rekordu o kluczu: " + recordKey);
+            emailActiveService.removeRecord(new EmailActive(emailToDeleteRepository.findByRecordKey(recordKey).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
+            emailToDeleteRepository.delete(emailToDeleteRepository.findByRecordKey(recordKey).orElseThrow(EmailToDeleteNotFoundException::new));
             return true;
         }
-        LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + id);
+        LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + recordKey);
         return false;
     }
 }

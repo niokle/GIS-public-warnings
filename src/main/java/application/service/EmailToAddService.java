@@ -39,22 +39,23 @@ public class EmailToAddService {
         return emailToAddRepository.findByEmail(email).isPresent();
     }
 
-    public boolean isEmailToAddExists(Long id) {
-        return emailToAddRepository.findById(id).isPresent();
-    }
+    //todo
+    //public boolean isEmailToAddExists(Long id) {
+    //    return emailToAddRepository.findById(id).isPresent();
+    //}
 
     public boolean isEmailToAddExistsByRecordKey(String recordKey) {
         return emailToAddRepository.findByRecordKey(recordKey).isPresent();
     }
 
-    public boolean confirmAdd(Long id) throws EmailToAddNotFoundException {
-        if (isEmailToAddExists(id)) {
-            LOGGER.info("Udane potwierdzone usuniecie rekordu o id: " + id);
-            emailActiveService.addRecord(new EmailActive(emailToAddRepository.findById(id).orElseThrow(EmailToAddNotFoundException::new).getEmail()));
-            emailToAddRepository.delete(emailToAddRepository.findById(id).orElseThrow(EmailToAddNotFoundException::new));
+    public boolean confirmAdd(String recordKey) throws EmailToAddNotFoundException {
+        if (isEmailToAddExistsByRecordKey(recordKey)) {
+            LOGGER.info("Udane potwierdzone usuniecie rekordu o kluczu: " + recordKey);
+            emailActiveService.addRecord(new EmailActive(emailToAddRepository.findByRecordKey(recordKey).orElseThrow(EmailToAddNotFoundException::new).getEmail()));
+            emailToAddRepository.delete(emailToAddRepository.findByRecordKey(recordKey).orElseThrow(EmailToAddNotFoundException::new));
             return true;
         }
-        LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + id);
+        LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o kluczu: " + recordKey);
         return false;
     }
 }

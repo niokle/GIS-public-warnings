@@ -20,8 +20,8 @@ public class EmailToAddController {
         return emailToAddService.addRecord(new EmailToAdd(email));
     }
 
-    @PostMapping("/{id}")
-    public boolean confirmEmailDelete(@PathVariable Long id) throws EmailToAddNotFoundException {
-        return emailToAddService.confirmAdd(id);
+    @PostMapping("/{recordKey}")
+    public boolean confirmEmailDelete(@PathVariable String recordKey) throws EmailToAddNotFoundException {
+        return emailToAddService.confirmAdd(recordKey);
     }
 }
