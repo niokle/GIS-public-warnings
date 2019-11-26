@@ -45,13 +45,13 @@ public class EmailToDeleteServiceTest {
         //then
         //todo
         Assert.assertEquals("m1", result1.getEmail());
-        Assert.assertEquals(null, result2);
+        Assert.assertEquals("", result2.getEmail());
 
         //cleanup
         emailActiveRepository.delete(emailActive1);
         emailActiveRepository.delete(emailActive2);
         emailActiveRepository.delete(emailActive3);
-        emailToDeleteRepository.delete(emailToDelete2);
+        emailToDeleteRepository.delete(emailToDelete1);
     }
 
     @Test

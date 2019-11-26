@@ -45,7 +45,7 @@ public class EmailToAddServiceTest {
 
         //then
         //todo
-        Assert.assertEquals(null, emailToAddResult1);
+        Assert.assertEquals("", emailToAddResult1.getEmail());
         Assert.assertEquals("n1", emailToAddResult2.getEmail());
 
         //cleanup

@@ -26,7 +26,7 @@ public class EmailToDeleteService {
         }
         LOGGER.info("Rekord nie istnieje, nie dodano rekordu: " + emailToDelete.getEmail());
         //todo
-        return null;
+        return new EmailToDelete("");
     }
 
     public void removeRecord(EmailToDelete emailToDelete) {

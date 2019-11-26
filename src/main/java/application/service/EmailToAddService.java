@@ -27,7 +27,7 @@ public class EmailToAddService {
         }
         LOGGER.info("Rekord istnieje, nie dodano rekordu: " + emailToAdd.getEmail());
         //todo
-        return null;
+        return new EmailToAdd("");
     }
 
     public void removeRecord(EmailToAdd emailToAdd) {
