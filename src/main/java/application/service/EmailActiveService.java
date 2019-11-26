@@ -23,7 +23,7 @@ public class EmailActiveService {
         }
         //todo
         LOGGER.info("Rekord istnieje, nie dodano rekordu: " + emailActive.getEmail());
-        return null;
+        return new EmailActive("");
     }
 
     public void removeRecord(EmailActive emailActive) {
