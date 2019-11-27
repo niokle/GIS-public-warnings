@@ -22,12 +22,14 @@ public class RssOldItem {
     @ManyToOne
     @JoinColumn(name = "rssFeed.feedId")
     private RssFeed rssFeed;
+    private boolean sent;
 
     public RssOldItem(String title, String url, LocalDateTime dateTime, RssFeed rssFeed) {
         this.title = title;
         this.url = url;
         this.dateTime = dateTime;
         this.rssFeed = rssFeed;
+        this.sent = false;
     }
 
     @Override
