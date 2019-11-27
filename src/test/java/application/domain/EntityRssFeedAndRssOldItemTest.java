@@ -2,6 +2,8 @@ package application.domain;
 
 import application.repository.RssFeedRepository;
 import application.repository.RssOldItemRepository;
+import application.service.RssFeedService;
+import application.service.RssOldItemService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,12 @@ import java.time.LocalDateTime;
 public class EntityRssFeedAndRssOldItemTest {
 
     @Autowired
+    RssFeedService rssFeedService;
+
+    @Autowired
+    RssOldItemService rssOldItemService;
+
+    @Autowired
     RssFeedRepository rssFeedRepository;
 
     @Autowired
@@ -26,29 +34,25 @@ public class EntityRssFeedAndRssOldItemTest {
         //given
         RssFeed rssFeed1 = new RssFeed("www1");
         RssFeed rssFeed2 = new RssFeed("www2");
-        RssFeed rssFeedResult1 = rssFeedRepository.save(rssFeed1);
-        RssFeed rssFeedResult2 = rssFeedRepository.save(rssFeed2);
+        RssFeed rssFeedResult1 = rssFeedService.addFeed(rssFeed1);
+        RssFeed rssFeedResult2 = rssFeedService.addFeed(rssFeed2);
         RssOldItem rssOldItem1 = new RssOldItem("rss1", "rsswww1", LocalDateTime.now(), rssFeed1);
         RssOldItem rssOldItem2 = new RssOldItem("rss2", "rsswww2", LocalDateTime.now(), rssFeed2);
         RssOldItem rssOldItem3 = new RssOldItem("rss3", "rsswww3", LocalDateTime.now(), rssFeed1);
         RssOldItem rssOldItem4 = new RssOldItem("rss4", "rsswww4", LocalDateTime.now(), rssFeed2);
-        RssOldItem rssOldItemResult1 = rssOldItemRepository.save(rssOldItem1);
-        RssOldItem rssOldItemResult2 = rssOldItemRepository.save(rssOldItem2);
-        RssOldItem rssOldItemResult3 = rssOldItemRepository.save(rssOldItem3);
-        RssOldItem rssOldItemResult4 = rssOldItemRepository.save(rssOldItem4);
+        RssOldItem rssOldItemResult1 = rssOldItemService.addRecord(rssOldItem1);
+        RssOldItem rssOldItemResult2 = rssOldItemService.addRecord(rssOldItem2);
+        RssOldItem rssOldItemResult3 = rssOldItemService.addRecord(rssOldItem3);
+        RssOldItem rssOldItemResult4 = rssOldItemService.addRecord(rssOldItem4);
 
         //when
-        rssFeedRepository.delete(rssFeedResult1);
+        rssFeedService.removeFeed(rssFeedResult1.getFeedId());
 
         //then
         Assert.assertEquals(1, rssFeedRepository.count());
-        //todo Assert.assertEquals(2, rssOldItemRepository.count());
+        Assert.assertEquals(2, rssOldItemRepository.count());
 
         //cleanup
-        rssFeedRepository.delete(rssFeedResult2);
-        rssOldItemRepository.delete(rssOldItemResult1);
-        rssOldItemRepository.delete(rssOldItemResult2);
-        rssOldItemRepository.delete(rssOldItemResult3);
-        rssOldItemRepository.delete(rssOldItemResult4);
+        rssFeedService.removeFeed(rssFeedResult2.getFeedId());
     }
 }

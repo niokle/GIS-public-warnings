@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -18,10 +19,24 @@ public class RssFeed {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
     private String url;
-    @OneToMany(targetEntity = RssOldItem.class, orphanRemoval = true, mappedBy = "rssFeed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = RssOldItem.class, mappedBy = "rssFeed", fetch = FetchType.LAZY)
     private List<RssOldItem> rssOldItems = new ArrayList<>();
 
     public RssFeed(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RssFeed rssFeed = (RssFeed) o;
+        return getFeedId().equals(rssFeed.getFeedId()) &&
+                Objects.equals(getUrl(), rssFeed.getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFeedId(), getUrl());
     }
 }

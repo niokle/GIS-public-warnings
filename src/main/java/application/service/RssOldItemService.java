@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RssOldItemService {
@@ -24,5 +26,10 @@ public class RssOldItemService {
 
     public boolean isRssItemExists(String title, String url, LocalDateTime dateTime, RssFeed rssFeed) {
         return rssOldItemRepository.findByTitleAndUrlAndAndDateTimeAndRssFeed(title, url, dateTime, rssFeed).isPresent();
+    }
+
+    public void removeRecordsByRssFeed(RssFeed rssFeed) {
+        List<RssOldItem> rssOldItemsToDelete = rssOldItemRepository.findAllByRssFeed(rssFeed);
+        rssOldItemRepository.deleteAll(rssOldItemsToDelete);
     }
 }
