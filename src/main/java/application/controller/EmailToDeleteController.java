@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.domain.EmailToDelete;
+import application.exception.EmailActiveNotFoundException;
 import application.exception.EmailToDeleteNotFoundException;
 import application.service.EmailToDeleteService;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class EmailToDeleteController {
     }
 
     @PostMapping("/{recordKey}")
-    public boolean confirmEmailDelete(@PathVariable String recordKey) throws EmailToDeleteNotFoundException {
+    public boolean confirmEmailDelete(@PathVariable String recordKey) throws EmailToDeleteNotFoundException, EmailActiveNotFoundException {
         return emailToDeleteService.confirmDelete(recordKey);
     }
 

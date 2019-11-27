@@ -2,6 +2,7 @@ package application.service;
 
 import application.domain.EmailActive;
 import application.domain.EmailToDelete;
+import application.exception.EmailActiveNotFoundException;
 import application.exception.EmailToDeleteNotFoundException;
 import application.repository.EmailToDeleteRepository;
 import org.slf4j.Logger;
@@ -46,10 +47,10 @@ public class EmailToDeleteService {
         return emailToDeleteRepository.findByRecordKey(recordKey).isPresent();
     }
 
-    public boolean confirmDelete(String recordKey) throws EmailToDeleteNotFoundException {
+    public boolean confirmDelete(String recordKey) throws EmailToDeleteNotFoundException, EmailActiveNotFoundException {
         if (isEmailToDeleteExistsByRecordKey(recordKey)) {
             LOGGER.info("Udane potwierdzone usuniecie rekordu o kluczu: " + recordKey);
-            emailActiveService.removeRecord(new EmailActive(emailToDeleteRepository.findByRecordKey(recordKey).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
+            emailActiveService.removeRecord(emailActiveService.findEmailActiveByEmail(emailToDeleteRepository.findByRecordKey(recordKey).orElseThrow(EmailToDeleteNotFoundException::new).getEmail()));
             emailToDeleteRepository.delete(emailToDeleteRepository.findByRecordKey(recordKey).orElseThrow(EmailToDeleteNotFoundException::new));
             return true;
         }

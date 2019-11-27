@@ -1,6 +1,7 @@
 package application.service;
 
 import application.domain.EmailActive;
+import application.exception.EmailActiveNotFoundException;
 import application.repository.EmailActiveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,5 +34,9 @@ public class EmailActiveService {
 
     public boolean isEmailActiveExists(String email) {
         return emailActiveRepository.findByEmail(email).isPresent();
+    }
+
+    public EmailActive findEmailActiveByEmail(String email) throws EmailActiveNotFoundException {
+        return emailActiveRepository.findByEmail(email).orElseThrow(EmailActiveNotFoundException::new);
     }
 }
