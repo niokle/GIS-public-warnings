@@ -1,6 +1,8 @@
 package application.service;
 
+import application.configuration.ApplicationConfiguration;
 import application.domain.EmailActive;
+import application.domain.EmailMessage;
 import application.domain.EmailToAdd;
 import application.exception.EmailToAddNotFoundException;
 import application.repository.EmailToAddRepository;
@@ -15,17 +17,28 @@ import java.util.List;
 public class EmailToAddService {
     private EmailToAddRepository emailToAddRepository;
     private EmailActiveService emailActiveService;
+    private SendEmailService sendEmailService;
+    private ApplicationConfiguration applicationConfiguration;
     private static Logger LOGGER = LoggerFactory.getLogger(EmailToAddService.class);
 
-    public EmailToAddService(EmailToAddRepository emailToAddRepository, EmailActiveService emailActiveService) {
+    public EmailToAddService(EmailToAddRepository emailToAddRepository, EmailActiveService emailActiveService,
+                             SendEmailService sendEmailService, ApplicationConfiguration applicationConfiguration) {
         this.emailToAddRepository = emailToAddRepository;
         this.emailActiveService = emailActiveService;
+        this.sendEmailService = sendEmailService;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     public EmailToAdd addRecord(@NotNull EmailToAdd emailToAdd) {
         if (!emailActiveService.isEmailActiveExists(emailToAdd.getEmail()) && !isEmailToAddExists(emailToAdd.getEmail())) {
             LOGGER.info("Dodanie rekordu: " + emailToAdd.getEmail());
-            return emailToAddRepository.save(emailToAdd);
+            EmailToAdd emailToAddSaved = emailToAddRepository.save(emailToAdd);
+            EmailMessage emailMessage = new EmailMessage(emailToAdd.getEmail(), "Potwierdzenie dodania adresu",
+                    "Kliknij na poniższy link w celu potwierdzenia dodania adresu email:" + System.lineSeparator()
+                            + applicationConfiguration.getBaseUrl() + applicationConfiguration.getEmailAddUrl()
+                            + "/" + emailToAddSaved.getRecordKey());
+            sendEmailService.sendMessage(emailMessage);
+            return emailToAddSaved;
         }
         LOGGER.info("Rekord istnieje, nie dodano rekordu: " + emailToAdd.getEmail());
         //todo

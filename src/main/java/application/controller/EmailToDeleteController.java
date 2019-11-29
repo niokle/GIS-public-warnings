@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*") //todo
 @RestController
-@RequestMapping("emails/delete")
+@RequestMapping("${config.address.email.delete.url}")
 public class EmailToDeleteController {
     private EmailToDeleteService emailToDeleteService;
 

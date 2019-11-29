@@ -33,12 +33,12 @@ public class ApplicationScheduler {
         LOGGER.info("Uruchomiono zadanie schedulera");
     }
 
-    @Scheduled(cron = "*/2 * * * * *") //todo zmienic na co godzine
+    //@Scheduled(cron = "*/2 * * * * *") //todo zmienic na co godzine
     public void addNewRssFeedsScheduler() throws IOException, FeedException, RssFeedsNotFoundException {
         rssOldItemAddService.rssAddToRssOldItem();
     }
 
-    @Scheduled(cron = "*/2 * * * * *") //todo zmienic na co godzine
+    //@Scheduled(cron = "*/2 * * * * *") //todo zmienic na co godzine
     public void addSendNewRssFeedsScheduler() {
         sendingNotSentRssFeedsService.sendEmail();
     }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("feeds/")
+@RequestMapping("${config.address.feeds.url}")
 public class RssFeedController {
     private RssFeedService rssFeedService;
 

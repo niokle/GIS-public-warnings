@@ -1,6 +1,7 @@
 package application.service;
 
-import application.domain.EmailActive;
+import application.configuration.ApplicationConfiguration;
+import application.domain.EmailMessage;
 import application.domain.EmailToDelete;
 import application.exception.EmailActiveNotFoundException;
 import application.exception.EmailToDeleteNotFoundException;
@@ -15,17 +16,28 @@ import java.util.List;
 public class EmailToDeleteService {
     private EmailToDeleteRepository emailToDeleteRepository;
     private EmailActiveService emailActiveService;
+    private SendEmailService sendEmailService;
+    private ApplicationConfiguration applicationConfiguration;
     private static Logger LOGGER = LoggerFactory.getLogger(EmailToDeleteService.class);
 
-    public EmailToDeleteService(EmailToDeleteRepository emailToDeleteRepository, EmailActiveService emailActiveService) {
+    public EmailToDeleteService(EmailToDeleteRepository emailToDeleteRepository, EmailActiveService emailActiveService,
+                                SendEmailService sendEmailService, ApplicationConfiguration applicationConfiguration) {
         this.emailToDeleteRepository = emailToDeleteRepository;
         this.emailActiveService = emailActiveService;
+        this.sendEmailService = sendEmailService;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     public EmailToDelete addRecord(EmailToDelete emailToDelete) {
         if (emailActiveService.isEmailActiveExists(emailToDelete.getEmail()) && !isEmailToDeleteExists(emailToDelete.getEmail())) {
             LOGGER.info("Dodanie rekordu: " + emailToDelete.getEmail());
-            return emailToDeleteRepository.save(emailToDelete);
+            EmailToDelete emailToDeleteSaved = emailToDeleteRepository.save(emailToDelete);
+            EmailMessage emailMessage = new EmailMessage(emailToDelete.getEmail(), "Potwierdzenie usuniecia adresu",
+                    "Kliknij na poniższy link w celu potwierdzenia usuniecia adresu email:" + System.lineSeparator()
+                            + applicationConfiguration.getBaseUrl() + applicationConfiguration.getEmailDeleteUrl()
+                            + "/" + emailToDeleteSaved.getRecordKey());
+            sendEmailService.sendMessage(emailMessage);
+            return emailToDeleteSaved;
         }
         LOGGER.info("Rekord nie istnieje, nie dodano rekordu: " + emailToDelete.getEmail());
         //todo

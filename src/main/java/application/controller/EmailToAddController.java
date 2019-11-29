@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*") //todo
 @RestController
-@RequestMapping("emails/add")
+@RequestMapping("${config.address.email.add.url}")
 public class EmailToAddController {
     private EmailToAddService emailToAddService;
 
