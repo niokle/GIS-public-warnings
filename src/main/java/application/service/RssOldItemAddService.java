@@ -3,6 +3,7 @@ package application.service;
 import application.domain.RssFeed;
 import application.domain.RssNewItem;
 import application.domain.RssOldItem;
+import application.exception.RssFeedsNotFoundException;
 import com.rometools.rome.io.FeedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class RssOldItemAddService {
         this.rssOldItemService = rssOldItemService;
     }
 
-    public void rssAddToRssOldItem() throws IOException, FeedException {
+    public void rssAddToRssOldItem() throws IOException, FeedException, RssFeedsNotFoundException {
         for (RssFeed rssFeed : rssFeedService.getFeeds()) {
             LOGGER.info("Pobieranie danych z adresu: " + rssFeed.getUrl());
             rssService.setRssFeed(rssFeed);
@@ -35,7 +36,7 @@ public class RssOldItemAddService {
                     + " [datetime]: " + rssNewItem.getDateTime() + " [feed id]: " + rssFeed.getFeedId());
                     rssOldItemService.addRecord(new RssOldItem(rssNewItem.getTitle(), rssNewItem.getUrl(), rssNewItem.getDateTime(), rssFeed));
                 } else {
-                    LOGGER.info("Rekord istnieje, [title]: " + rssNewItem.getTitle() + " [url]: " + rssNewItem.getUrl()
+                    LOGGER.info("Brak zapisu, rekord istnieje, [title]: " + rssNewItem.getTitle() + " [url]: " + rssNewItem.getUrl()
                             + " [datetime]: " + rssNewItem.getDateTime() + " [feed id]: " + rssFeed.getFeedId());
                 }
             }

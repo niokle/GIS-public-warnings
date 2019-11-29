@@ -1,6 +1,7 @@
 package application.service;
 
 import application.domain.RssFeed;
+import application.exception.RssFeedsNotFoundException;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -28,12 +29,18 @@ public class RssService {
         this.rssFeed = rssFeed;
     }
 
-    public void fillSyndFeed() throws IOException, FeedException {
+    public void fillSyndFeed() throws IOException, FeedException, RssFeedsNotFoundException {
+        syndFeed = null;
         URL feedSource = new URL(rssFeed.getUrl());
         SyndFeedInput input = new SyndFeedInput();
-        SyndFeed syndFeed = input.build(new XmlReader(feedSource));
-        LOGGER.info("Pobieranie źródeł RSS z adresu: " + rssFeed.getUrl());
-        this.syndFeed = syndFeed;
+        try {
+            SyndFeed syndFeed = input.build(new XmlReader(feedSource));
+            LOGGER.info("Pobieranie źródeł RSS z adresu: " + rssFeed.getUrl());
+            this.syndFeed = syndFeed;
+        } catch (Exception e) {
+            LOGGER.info("Błąd pobierania źródeł RSS z adresu: " + rssFeed.getUrl());
+            throw new RssFeedsNotFoundException();
+        }
     }
 
     public List<RssNewItem> getFeedItems() {

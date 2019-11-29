@@ -18,25 +18,12 @@ public class RssFeed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
+    private String feedName;
     private String url;
     @OneToMany(targetEntity = RssOldItem.class, mappedBy = "rssFeed", fetch = FetchType.LAZY)
     private List<RssOldItem> rssOldItems = new ArrayList<>();
 
     public RssFeed(String url) {
         this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RssFeed rssFeed = (RssFeed) o;
-        return getFeedId().equals(rssFeed.getFeedId()) &&
-                Objects.equals(getUrl(), rssFeed.getUrl());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getFeedId(), getUrl());
     }
 }

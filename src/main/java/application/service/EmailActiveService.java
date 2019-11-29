@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmailActiveService {
     private EmailActiveRepository emailActiveRepository;
@@ -38,5 +40,9 @@ public class EmailActiveService {
 
     public EmailActive findEmailActiveByEmail(String email) throws EmailActiveNotFoundException {
         return emailActiveRepository.findByEmail(email).orElseThrow(EmailActiveNotFoundException::new);
+    }
+
+    public List<EmailActive> getAllEmailActive() {
+        return emailActiveRepository.findAll();
     }
 }

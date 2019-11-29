@@ -14,4 +14,6 @@ public interface RssOldItemRepository extends CrudRepository<RssOldItem, Long> {
     Optional<RssOldItem> findByTitleAndUrlAndAndDateTimeAndRssFeed(String title, String url, LocalDateTime dateTime, RssFeed rssFeed);
 
     List<RssOldItem> findAllByRssFeed(RssFeed rssFeed);
+
+    List<RssOldItem> findAll();
 }

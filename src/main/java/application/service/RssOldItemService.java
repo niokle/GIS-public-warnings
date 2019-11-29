@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,5 +30,27 @@ public class RssOldItemService {
     public void removeRecordsByRssFeed(RssFeed rssFeed) {
         List<RssOldItem> rssOldItemsToDelete = rssOldItemRepository.findAllByRssFeed(rssFeed);
         rssOldItemRepository.deleteAll(rssOldItemsToDelete);
+    }
+
+    public List<RssOldItem> getAll() {
+        return rssOldItemRepository.findAll();
+    }
+
+    public boolean isAtLeastRssItemNotSent() {
+        for (RssOldItem rssOldItem : rssOldItemRepository.findAll()) {
+            if (!rssOldItem.isSent()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void changeStatusToSent() {
+        rssOldItemRepository.findAll().stream()
+                .filter(rssOldItem -> !rssOldItem.isSent())
+                .forEach(rssOldItem -> {
+                    rssOldItem.setSent(true);
+                    rssOldItemRepository.save(rssOldItem);
+                });
     }
 }
