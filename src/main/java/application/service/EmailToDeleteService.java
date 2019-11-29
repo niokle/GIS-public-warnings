@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmailToDeleteService {
     private EmailToDeleteRepository emailToDeleteRepository;
@@ -56,5 +58,9 @@ public class EmailToDeleteService {
         }
         LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o id: " + recordKey);
         return false;
+    }
+
+    public List<EmailToDelete> getAllEmailToDelete() {
+        return emailToDeleteRepository.findAll();
     }
 }

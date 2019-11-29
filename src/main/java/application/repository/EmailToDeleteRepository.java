@@ -4,6 +4,7 @@ import application.domain.EmailToDelete;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +14,6 @@ public interface EmailToDeleteRepository extends CrudRepository<EmailToDelete, L
     Optional<EmailToDelete> findById(Long id);
 
     Optional<EmailToDelete> findByRecordKey(String recordKey);
+
+    List<EmailToDelete> findAll();
 }

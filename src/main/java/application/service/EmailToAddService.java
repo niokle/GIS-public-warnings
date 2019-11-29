@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmailToAddService {
     private EmailToAddRepository emailToAddRepository;
@@ -57,5 +59,9 @@ public class EmailToAddService {
         }
         LOGGER.info("Nieudane potwierdzenie usuniecia rekordu o kluczu: " + recordKey);
         return false;
+    }
+
+    public List<EmailToAdd> getAllEmailToAdd() {
+        return emailToAddRepository.findAll();
     }
 }

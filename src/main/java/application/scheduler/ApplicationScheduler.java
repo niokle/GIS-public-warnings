@@ -1,6 +1,7 @@
 package application.scheduler;
 
 import application.exception.RssFeedsNotFoundException;
+import application.service.CleanupService;
 import application.service.RssOldItemAddService;
 import application.service.SendingNotSentRssFeedsService;
 import com.rometools.rome.io.FeedException;
@@ -11,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Component
 public class ApplicationScheduler {
@@ -20,6 +22,9 @@ public class ApplicationScheduler {
 
     @Autowired
     SendingNotSentRssFeedsService sendingNotSentRssFeedsService;
+
+    @Autowired
+    CleanupService cleanupService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ApplicationScheduler.class);
 
@@ -40,6 +45,6 @@ public class ApplicationScheduler {
 
     //todo ustawić na co godzinę
     public void cleanNotConfirmedEmailToAddAndEmailToDelete() {
-
+        cleanupService.cleanup(LocalDateTime.now().plusHours(24));
     }
 }
