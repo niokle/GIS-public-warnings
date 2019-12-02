@@ -20,4 +20,7 @@ public class ApplicationConfiguration {
 
     @Value("${config.address.feeds.url}")
     private String feedsUrl;
+
+    @Value("${config.address.administrator.email}")
+    private String adminEmail;
 }
